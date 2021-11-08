@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class PlayerController : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Animator animator;
 
+    public TextMeshProUGUI itemText;
+    private int item;
+
 
 
 
@@ -21,6 +25,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
+
+        item= 0;
+        SetScoreText ();
     }
 
     // Update is called once per frame
@@ -60,11 +67,27 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("isRunning", false);
         }
-    }
 
+        
+    }
+    void OnTriggerEnter2D (Collider2D other)
+    {
+    if (other.gameObject.CompareTag("item"))
+        {
+            other.gameObject.SetActive (false);
+            item= item +1;
+            SetScoreText ();
+        }
+    }
     void Jump()
     {
         rigidBody2D.velocity = new Vector2(rigidBody2D.velocity.x, jumpSpeed);
+        
+    }
+
+    void SetScoreText ()
+    {
+        itemText.text= "Gem Count:" + item.ToString();
     }
 
 }
